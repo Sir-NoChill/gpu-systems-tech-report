@@ -1,3 +1,6 @@
+nix:
+    nix-shell --command "just build"
+
 build: consolidate clean
     pdflatex main.tex
     biber main
