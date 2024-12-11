@@ -1,0 +1,24 @@
+\section{Early Evolution}
+
+Motivated by the popularity of the graphics pipepline, graphics accelerators
+in the ??s largely implemented a fixed pipeline in hardware. This section
+traces the evolution of this fixed design into one that supports general computation.
+This section focuses primarily on Nvidia and their role during this time.
+
+With the design of graphics accelerators heavily coupled to the pipeline,
+one critical difference between accelerators was how much of the
+graphics pipeline did the accelerator actually support.
+
+Until ??, graphics accelerators did not support the acceleration of
+\textit{Transformation} and \textit{Lighting} sub-stages (of the
+\textit{Geometry stage}) of the pipeline.
+This meant that the CPU would do the \textit{Application} stage and the
+the \textit{Transformation} and \textit{Lighting} sub-stages before passing
+the resulting vertices to the accelerator to do the rest. Examples of accelerators
+that did this include ??.
+
+Nvidia was the first ?? company to put the entire \textit{Geometry} stage
+onto the accelerator, allowing the CPU to focus on the \textit{Application}
+stage. This meant more high fidelity simulation.
+
+
