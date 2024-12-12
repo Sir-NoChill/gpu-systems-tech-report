@@ -1,0 +1,37 @@
+\section{Modern GPGPUs}
+
+This section will cover recent developments in GPGPUs.
+
+\subsection{Reality of Warps}
+
+Recall the Fermi SM diagram in Figure ??. We have two sets of 16 SPs corresponding
+two two warp schedulers, giving us 16 SPs per warp.
+
+Imagining warps as 32 cores executing in lock-step is useful in explaining things,
+but it isn't realistic. In reality, warp execution takes two cycles as shown
+in Figure ??.
+
+This is done because ??
+
+\subsection{Nvidia Developments}
+
+\textbf{Kepler:} This is the first Nvidia GPU to introduce a compiler generate control instruction.
+This is inserted every 7 instructions. One byte of the 64-bit instruction indicates
+that this is a control instruction. The other 7 bytes encode information for the
+next 7 instructions \cite{chipsandcheeseInsideKepler}.
+
+This control instruction encodes latency information, preventing write-after-read hazards
+from occuring between fixed-latency instructions \cite{chipsandcheeseInsideKepler}.
+
+In addition, these instructions encode whether or not instructions can be dual-issued \cite{chipsandcheeseInsideKepler}.
+
+\textbf{Maxwell:} This architecture increases the frequency of the control word,
+inserting it every 3 instructions instead of every 7. 
+
+Maxwell control instructions include information pertaining to variable latency
+instructions. This works by assigning destination registers of these instructions
+to a barrier in hardware. Instructions that then have those
+registers as operands must wait until the barriers clear up. This means
+that Maxwell needs less scoreboarding hardware \cite{chipsandcheeseMaxwellNvidias}.
+
+This architecture also introduced 

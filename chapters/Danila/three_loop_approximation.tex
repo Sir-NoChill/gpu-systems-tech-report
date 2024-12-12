@@ -1,0 +1,110 @@
+\section{Three-Loop Approximation}
+
+One convenient way of understanding how the GPGPU works is through
+looking at its three main scheduling loops that run within every SM.
+This is the approach taken by \cite{aamodt2018general}.
+The textbook builds the architecture up, covering one scheduler at a time.
+This section will do the same, following the textbook closely, while omitting some detail.
+
+\subsection{One-Loop Approximation}
+
+The first loop is the scheduler that fetches instructions. Refer to Figure ??
+for a high level overview of the pipeline at this point.
+
+While the CPU issues many instructions at once to allow for latency
+hiding, the GPU hides is able to hide a significant amount of latency by issuing
+instructions for different warps at different cycles. Specifically, if we have
+a warp that is performing a memory access that missed in cache, we can swap
+to another warp whose next instruction uses an ALU, hiding the latency.
+
+In this approximation, we can have one instruction in flight at a time for
+a warp and we fetch instructions using the warp's program counter corresponding
+to this instruction. 
+
+\subsection{Two-Loop Approximation}
+
+The second loop is the scheduler that chooses which instructions to issue.
+Refer to Figure ?? for a high level overview of the pipeline at this point.
+
+In order to support swapping between warps, we need to save the values in
+the registers for each warp when we context switch.
+This means that our register file must have more space and be physically larger
+for every warp we support.
+As a result, this limits us in regards to how many warps we can allocate to an
+SM. This means that past a certain point, we may need other means of hiding
+latency.
+
+Another way we can hide latency is through instruction level parallelism with multiple instructions from a warp executing at the same time.
+Doing this naively can result in write-after-read hazards. As a result, we need 
+some means of avoiding hazards. Since warps execute instructions in-order,
+a natural solution is the scoreboard.
+
+In in-order CPUs, scoreboards simply have a ready bit for each register.
+This doesn't work for GPUs, though: we have over a thousand registers we
+would need to track, occupying significant space.
+
+One solution is the following: for each warp, keep a list of the destination
+registers of all in-flight instructions. When an instruction gets added to
+the Instruction Buffer (IB), it can check whether its operand registers match those
+in this list and save to its row in the IB a bit vector whose
+bits indicate whether or not an operand is ready (set to 1) in the sense that
+it will not be written to by any in-flight instructions.
+
+In the write-back stage, the instructions update the list of registers in the scoreboard,
+removing the one they write to.
+They also go through all instructions in the IB for their warp and update the
+ready bits for those instructions whose operand registers match its destination register.
+
+Instructions with all bits in their bit vectors set to 1 can be scheduled in-order by the scheduler.
+These then add their destination register to the scoreboard and begin execution.
+
+
+\subsection{Three-Loop Approximation}
+
+The third loop is the scheduler that optimizes accesses to banked register files.
+
+A single-ported register file can be read from or written to by one operand on a given cycle.
+If we want to increase the number of accesses, we can increase the number of ports, but
+this requires a lot of area.
+
+An alternative approach to enable more concurrent accesses is banking. This consists of splitting
+our register file into smaller register files called banks. Each bank holds different
+data and has its own read/write port. This means that each bank could be accessed in one
+cycle by different operands. Accesses for operands pass through an arbitor that routes
+them to the correct bank.
+
+Registers are mapped to banks in a swizzled fashion. A naive mapping of $r# \% NUM_BANKS$ would
+assign registers 0 of all warps to bank 0, registers 1 to bank 1, and so on. If we try to fetch
+the same register for two different warps, then, we would have to stall because we would have
+two accesses to a single bank in one cycle.
+
+Swizzling fixes this issue. It makes the warp number affect our mapping, giving us $(r# + W#) \% NUM_BANKS$.
+This way, the same register on different warps maps to different banks.
+
+To schedule operand accesses, the Operand Collector is used. This is a hardware unit that
+has a slot for each instruction. These schedule register bank accesses to minimize conflicts.
+
+Figures ?? and ?? taken from \cite{aamodt2018general} show the scheduling of register accesses
+without swizzling and Operand Collectors vs. with swizzling and the Operand Collector.
+
+\subsection{Warp Divergence}
+
+This approximation has omitted handling warp divergence for the sake of simplicity.
+We can have control flow in CUDA code. An example can be seen in Figure ??.
+
+This is the same code as before, except for the fact that the size of the vector is passed
+as an argument, $N$. This could be specified by a user, unlike the number of threads in a block,
+which is hardcoded. We assume that $N$ is less than the number of threads in this example.
+
+One question that might arise is what if $N$ is 16? Warps consist of 32 threads
+executing in lock-step. How do we handle this?
+
+The answer is predication: we use a mask (the SIMT Mask) to control which threads in a warp
+should be active (set to 1) and inactive (set to 0) at a given point in the program's execution.
+
+The SIMT Mask is managed by the SIMT Stack.
+
+\subsection{Full Architecture}
+
+With the SIMT Stack, we can assemble a diagram of the entire architecture.
+This can be seen in Figure ??.

@@ -1,7 +1,8 @@
 \section{Graphics Pipeline}
 
-The graphics pipeline gained popularity thanks to ?? in ?? and its structure influenced the design of graphics accelerators.
-The pipeline has four primary stages:
+The graphics pipeline gained popularity thanks to OpenGL releasing in 1989 and its structure influenced the design of graphics accelerators 
+(\ref{mcclanahan2010history}).
+The pipeline has four primary stages (\cite{crow2004evolution}):
 
 \begin{itemize}
     \item Application
@@ -11,7 +12,7 @@ The pipeline has four primary stages:
 \end{itemize}
 
 with other minor stages scattered between.
-This section will explain these stages and use them to narrate the evolution of the unprogrammable graphics accelerators commonplace in the ??s into the general purpose hardware we are familiar with.
+This section will explain these stages and use them to narrate the evolution of the unprogrammable graphics accelerators commonplace in the 1980s into the general purpose hardware we are familiar with.
 
 \subsection{Application}
 
@@ -20,7 +21,7 @@ Its output includes a set of vertices that encode information pertaining to obje
 The \textit{Application} stage, then, naturally does the tasks necessary to produce or update the information encoded in these vertices.
 These tasks vary based on the application, but examples include handling physics in video games and animation.
 
-The information encoded in vertices varies based on implementation. OpenGL's vertices include position, normal, and color.
+The information encoded in vertices varies based on implementation. OpenGL's vertices include position, normal, and color (\cite{wiki:vertex}).
 
 \subsection{Geometry}
 
@@ -33,7 +34,7 @@ These vertices are first transformed to where they should be in space.
 For a concrete example: if a programmer specifies a car's coordinates and
 rotation, the first part of the \textit{Transformation} stage would be to perform
 transformations (typically via matrix multiplication) to get the car in the
-right place.
+right place [\cite{nvidia256}].
 
 In addition to objects, an observer exists somewhere in space.
 The observer has a set of coordinates, a rotation, and a field of view that altogether dictate the view that should get rendered to the screen.
@@ -42,11 +43,8 @@ Thus, we must transform our space to have the observer at this position.
 With this transformation, what the observer sees does not change.
 In this transformation, the 2D plane corresponding to what the observer
 sees is typically mapped to the $x,y$ directions and the depth to $z$.
+Perspective transformations are also applied here to make what the observer sees in the $x,y$ plane correspond to our perception of 3D space \cite{agoston2005transformations}.
 
-This stage sees other transformations happen, like perspective transformations,
-which transform the space with respect to the position and orientation of the
-observer to make the $x,y$ plane it seems correspond to our perception of
-3D space.
 
 \textbf{Lighting:}
 The \textit{Lighting} stage modifies the color values of our transformed vertices.
@@ -54,21 +52,21 @@ Lighting information is given to us by the \textit{Application} stage.
 This includes information about light sources, like spot lights and ambient
 light, including their strength and orientation.
 This information is largely encoded in matrices and the color values of
-vertices can be modified with a series of matrix multiplications.
+vertices can be modified with a series of matrix multiplications[\cite{nvidia256}].
 
 \textbf{Primitive Assembly:}
 This stage groups our vertices into triangles and other primitives.
 Triangles are the simplest polygon that we can combine to create other polygons,
-making them convenient to work with.
+making them convenient to work with (\cite{wiki:overview}, \cite{scratchapixelRasterization}).
 
 \textbf{Clipping and Culling:}
 The world our space represents may have objects that the observer can't see.
-The primitives composing these objects are entirely removed in what is called \textbf{culling}.
+The primitives composing these objects are entirely removed in what is called \textbf{culling} \cite{graphicscompendiumGraphicsCompendium}.
 
 Some objects overlap with the boundaries of the observer's field of view. The
 triangles making up these objects are reshaped --- converted into smaller traingles ---
 to fit within the boundaries.
-This process is called \textbf{clipping}.
+This process is called \textbf{clipping} \cite{graphicscompendiumGraphicsCompendium}.
 
 \subsection{Rasterization}
 
@@ -78,7 +76,7 @@ This stage converts those triangles into fragments.
 Fragments can be generated through the following algorithm:
 First, iterate through all triangles. Next, iterate over all pixels.
 If a triangle overlaps with a pixel, create a fragment with those pixel
-coordinates belonging to the triangle.
+coordinates belonging to the triangle \cite{scratchapixelRasterization}.
 
 Fragments differ from pixels in that there can be multiple fragments corresponding
 to a given pixel's position on the screen. In terms of storing color information,
@@ -89,6 +87,6 @@ Fragments are used in later minor stages of the pipeline.
 \subsection{Screen}
 The pipeline ends with fragments rendered to the screen as pixels.
 Rendering happens through writing colour data to a special region in memory
-mapped to the screen.
+mapped to the screen \cite{crow2004evolution}.
 
 

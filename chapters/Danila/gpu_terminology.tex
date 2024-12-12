@@ -1,0 +1,47 @@
+\section{GPU Terminology}
+
+To understand the architecture of a GPGPU, we need to define some terms first.
+This section will define various GPU related terms using CUDA examples and their
+Nvidia names. 
+
+\subsection{Programming Concepts}
+
+\textbf{Threads:} GPU threads can be thought of in the same way one might
+think of CPU threads. They perform some fraction of computation \cite{nvidiaCUDAProgramming}.
+
+The code in Figure ?? shows us how we can use threads to add two vectors,
+$A$ and $B$, forming a vector $C$. $__global__$ indicates that this code
+is to be run on the GPU (\cite{nvidiaCUDAProgramming}).
+
+If we were to have $1000$ elements in these vectors, we would do this 
+by spawning $1000$ threads, each of which would get assigned a $threadIdx.x$
+from $0$ to $999$. Each thread would perform the operation corresponding to
+its id.
+
+The assignment of these values to threads is largely arbitrary in that
+we could shape them to be something else. CUDA supports $threadIdx.y$ and
+$threadIdx.z$ in addition to $threadIdx.x$, allowing us to organize
+our threads into three dimensions when we spawn them.
+
+\textbf{Blocks:} We spawn threads in groups called blocks. The sizes
+and dimensoins of these blocks dictate the number of threads and how they
+are assigned $threadIdx$s. We can spawn multiple blocks --- which we might
+do if we want to, say, do vector addition on many pairs of vectors.
+Blocks are organized in grids \cite{nvidiaCUDAProgramming}.
+
+\subsection{Hardware Concepts}
+
+Computation on GPUs is organized with many streaming multiprocessors (SMs).
+Blocks are assigned to SMs. SMs run one block at a time but can have
+many more assigned to them (\cite{aamodt2018general}, \cite{nvidiaCUDAProgramming}).
+
+SMs are composed of many small cores called streaming processors (SPs) or CUDA cores.
+Threads run on these cores (\cite{nvidiaCUDAProgramming}).
+
+The previous section showed SMs with multiple
+warp schedulers scheduling compute across multiple sets of SPs.
+We will revisit this modern organization of compute later.
+
+For now, we can imagine that an SM has 32 SPs that all execute their threads in
+lock-step. These threads are grouped and refered to as \textbf{warps} (\cite{aamodt2018general}).
+
