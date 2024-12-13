@@ -50,11 +50,11 @@ If so, it can save those registers in the reuse cache. Future uses of those
 registers in the same operand slot can access the value from the reuse cache,
 avoiding having to access the register file, reducing bank conflicts (\cite{jia2018dissecting}, \cite{githubSGEMM}, \cite{chipsandcheeseMaxwellNvidias}).
 
-\textbf{Pascal:} Pascal introduces a new way of handling warp divergence.
-
 \textbf{Volta:} Volta increases the instruction word from 64 bits to 128 bits.
 It also starts to include control information within instructions instead of
 using a control word\cite{jia2018dissecting}.
 
 This architecture also introduces the Tensor Core \cite{sun2022dissecting}.
 
+Volta also replaces the SIMT Stack based handling of warp divergence with
+barriers \cite{aamodt2018general}.
