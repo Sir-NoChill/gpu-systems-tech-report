@@ -4,27 +4,47 @@ One convenient way of understanding how the GPGPU works is through
 looking at its three main scheduling loops that run within every SM.
 This is the approach taken by \cite{aamodt2018general}.
 The textbook builds the architecture up, covering one scheduler at a time.
-This section will do the same, following the textbook closely, while omitting some detail.
+
+This section will use the three approximations introduced in the textbook but
+leave the treatment of warp divergence for last. The reader is encouraged to
+refer to the textbook for more details.
 
 \subsection{One-Loop Approximation}
 
-The first loop is the scheduler that fetches instructions. Refer to Figure ??
-for a high level overview of the pipeline at this point.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/1.png}
+    \caption{One-Loop Approximation diagram. }
+    \label{fig:oneloop}
+\end{figure}
+
+The first loop is the scheduler that fetches instructions. 
+
+Refer to Figure \ref{fig:oneloop} for a high level overview of the pipeline at this point.
+The Fetch unit sends an instruction from the Instruction Cache (I-Cache) to
+get Decoded before it gets saved to the Instruction Buffer (I-Buffer).
+
+In this approximation, we can have one instruction in flight at a time for
+a warp and we fetch instructions using the warp's program counter corresponding
+to this instruction.
 
 While the CPU issues many instructions at once to allow for latency
-hiding, the GPU hides is able to hide a significant amount of latency by issuing
+hiding, the GPU hides a significant amount of latency by Issuing
 instructions for different warps at different cycles. Specifically, if we have
 a warp that is performing a memory access that missed in cache, we can swap
 to another warp whose next instruction uses an ALU, hiding the latency.
 
-In this approximation, we can have one instruction in flight at a time for
-a warp and we fetch instructions using the warp's program counter corresponding
-to this instruction. 
-
 \subsection{Two-Loop Approximation}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/2.png}
+    \caption{Two-Loop Approximation diagram. }
+    \label{fig:twoloop}
+\end{figure}
+
 The second loop is the scheduler that chooses which instructions to issue.
-Refer to Figure ?? for a high level overview of the pipeline at this point.
+Refer to Figure \ref{fig:twoloop} for a high level overview of the pipeline at this point.
 
 In order to support swapping between warps, we need to save the values in
 the registers for each warp when we context switch.
@@ -45,8 +65,8 @@ would need to track, occupying significant space.
 
 One solution is the following: for each warp, keep a list of the destination
 registers of all in-flight instructions. When an instruction gets added to
-the Instruction Buffer (IB), it can check whether its operand registers match those
-in this list and save to its row in the IB a bit vector whose
+the I-Buffer, it can check whether its operand registers match those
+in this list and save to its row in the I-Buffer a bit vector whose
 bits indicate whether or not an operand is ready (set to 1) in the sense that
 it will not be written to by any in-flight instructions.
 
@@ -73,19 +93,28 @@ data and has its own read/write port. This means that each bank could be accesse
 cycle by different operands. Accesses for operands pass through an arbitor that routes
 them to the correct bank.
 
-Registers are mapped to banks in a swizzled fashion. A naive mapping of $r# \% NUM_BANKS$ would
+Registers are mapped to banks in a swizzled fashion. A naive mapping of a register to bank $r\# \ \% \ NUM\_BANKS$ would
 assign registers 0 of all warps to bank 0, registers 1 to bank 1, and so on. If we try to fetch
 the same register for two different warps, then, we would have to stall because we would have
 two accesses to a single bank in one cycle.
 
-Swizzling fixes this issue. It makes the warp number affect our mapping, giving us $(r# + W#) \% NUM_BANKS$.
+Swizzling fixes this issue. It makes the warp number affect our mapping. Thus, a given register is now
+assigned to bank $(r\# \ + \ W\#) \ \% \ NUM\_BANKS$.
 This way, the same register on different warps maps to different banks.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/operand.png}
+    \caption{Hardware for accessing the register file using the Operand Collector.}
+    \label{fig:opcoll}
+\end{figure}
 
 To schedule operand accesses, the Operand Collector is used. This is a hardware unit that
 has a slot for each instruction. These schedule register bank accesses to minimize conflicts.
+Figure \ref{fig:opcoll} shows how the banked registers could be structured with an Operand Collector.
 
-Figures ?? and ?? taken from \cite{aamodt2018general} show the scheduling of register accesses
-without swizzling and Operand Collectors vs. with swizzling and the Operand Collector.
+Refer to \cite{aamodt2018general} pages 35 to 40 for detailed examples that illustrate the benefits of using
+the Operand Collector and bank swizzling.
 
 \subsection{Warp Divergence}
 
@@ -106,5 +135,15 @@ The SIMT Mask is managed by the SIMT Stack.
 
 \subsection{Full Architecture}
 
+
+\subsection{Three-Loop Approximation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/3.png}
+    \caption{Three-Loop Approximation diagram with SIMT Stack for handling warp divergence.}
+    \label{fig:warpthreeloop}
+\end{figure}
+
 With the SIMT Stack, we can assemble a diagram of the entire architecture.
-This can be seen in Figure ??.
+This can be seen in Figure \ref{fig:warpthreeloop} 

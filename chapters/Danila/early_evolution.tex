@@ -42,7 +42,16 @@ before they were rendered to the screen (\cite{lsu}).
 Together, these shaders enabled more advanced graphical features to
 be implemented.
 
-An example architecture that implemented shaders is in Figure ??.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{assets/30_geforce6_03.jpg}
+    \caption{Diagram of the GeForce 6 }
+    \label{fig:geforce6}
+\end{figure}
+
+An example architecture that implemented shaders is in Figure \ref{fig:geforce6} \cite{nvidiaChapterGeForce}.
+Note the Vertex Processing (vertex shaders) and Texture and Fragment Processing
+(fragment shaders) using different processing units.
 
 \subsection{Unified Shader Architecture}
 
@@ -52,13 +61,38 @@ This meant that computations for all of these different tasks could be performed
 using the same ISA. This ISA thus had to be general, paving the way for
 the use of the GPU for applications beyond graphics \cite{parojModernUnification}.
 
-Figure ?? shows Nvidia's ?? GPU.
+Figure \ref{fig:geforce8} shows Nvidia's GeForce 8 architecture \cite{mcclanahan2010history}. This architecture
+has a number of streaming multiprocessors (SMs) with individual streaming processor cores
+(SPs). A controller manages what shaders execute on these SMs, allowing their output
+to feed back into them.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{assets/geforce8.png}
+    \caption{Diagram of the GeForce 8.}
+    \label{fig:geforce8}
+\end{figure}
 
 \subsection{The General Purpose GPU}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/fermi_architecture1.png}
+    \caption{Diagram of the entire Fermi architecture.}
+    \label{fig:fermi}
+\end{figure}
 
 Nvidia had an interest in general purpose GPU computing at least as early as during the development
 of the GeForce 8 series (\cite{dally2021evolution}).
 Fermi represented their first card marketed as a general purpose accelerator (\cite{nvidiafermi}).
-The general architecture of the chip can be seen in ?? and a single 
-multiprocessor core can be seen in ?? (\cite{nvidiafermi}).
+The general architecture of the chip can be seen in Figure \ref{fig:fermi} and a single 
+multiprocessor core can be seen in Figure \ref{fig:fermiSM} (\cite{nvidiafermi}).
 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/Fermi.svg.png}
+    \caption{Diagram of a single Fermi SM} 
+    \label{fig:fermiSM}
+\end{figure}

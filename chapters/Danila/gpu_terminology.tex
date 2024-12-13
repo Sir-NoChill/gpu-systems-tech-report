@@ -6,11 +6,21 @@ Nvidia names.
 
 \subsection{Programming Concepts}
 
+\begin{lstlisting}[caption=A simple CUDA example., label={listing:vecadd}]
+__global__ void VecAdd(float* A, float* B, float* C)
+{
+    int i = threadIdx.x;
+    C[i] = A[i] + B[i];
+}
+
+\end{lstlisting}
+
+
 \textbf{Threads:} GPU threads can be thought of in the same way one might
 think of CPU threads. They perform some fraction of computation \cite{nvidiaCUDAProgramming}.
 
-The code in Figure ?? shows us how we can use threads to add two vectors,
-$A$ and $B$, forming a vector $C$. $__global__$ indicates that this code
+The code in Listing \ref{listing:vecadd} shows us how we can use threads to add two vectors,
+$A$ and $B$, forming a vector $C$. $\_\_global\_\_$ indicates that this code
 is to be run on the GPU (\cite{nvidiaCUDAProgramming}).
 
 If we were to have $1000$ elements in these vectors, we would do this 

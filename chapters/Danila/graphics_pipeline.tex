@@ -1,8 +1,11 @@
 \section{Graphics Pipeline}
 
-The graphics pipeline gained popularity thanks to OpenGL releasing in 1989 and its structure influenced the design of graphics accelerators 
-(\ref{mcclanahan2010history}).
-The pipeline has four primary stages (\cite{crow2004evolution}):
+The graphics pipeline gained popularity thanks to the OpenGL API for graphics
+that released in 1989. It's popularity inspired hardware to dedicate individual units
+to its tasks, leading to many graphics accelerators implementing this pipeline in hardware
+\cite{mcclanahan2010history}.
+
+The pipeline covered here has four primary stages (\cite{crow2004evolution}):
 
 \begin{itemize}
     \item Application
@@ -12,7 +15,10 @@ The pipeline has four primary stages (\cite{crow2004evolution}):
 \end{itemize}
 
 with other minor stages scattered between.
+
 This section will explain these stages and use them to narrate the evolution of the unprogrammable graphics accelerators commonplace in the 1980s into the general purpose hardware we are familiar with.
+More details can be found in the references, as well as in the Wikipedia page for
+the Graphics Pipeline which covers the same sections as this report \cite{wiki:Graphics_pipeline}.
 
 \subsection{Application}
 
@@ -45,6 +51,14 @@ In this transformation, the 2D plane corresponding to what the observer
 sees is typically mapped to the $x,y$ directions and the depth to $z$.
 Perspective transformations are also applied here to make what the observer sees in the $x,y$ plane correspond to our perception of 3D space \cite{agoston2005transformations}.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/View_transform.svg.png}
+    \caption{Transformation of the space to fit the observer.}
+    \label{fig:transform}
+\end{figure}
+
+An example of this can be seen in Figure \ref{fig:transform} taken from \cite{wiki:Graphics_pipeline}.
 
 \textbf{Lighting:}
 The \textit{Lighting} stage modifies the color values of our transformed vertices.
@@ -68,6 +82,15 @@ triangles making up these objects are reshaped --- converted into smaller traing
 to fit within the boundaries.
 This process is called \textbf{clipping} \cite{graphicscompendiumGraphicsCompendium}.
 
+An example of clipping and culling can be found in Figure \ref{fig:clip} taken from \cite{wiki:Graphics_pipeline}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/Cube_clipping.svg.png}
+    \caption{Examples of clipping (of the blue triangle) and culling (of the orange triangle). }
+    \label{fig:clip}
+\end{figure}
+
 \subsection{Rasterization}
 
 After we pass the \textit{Geometry} stage, we have a set of triangles.
@@ -87,6 +110,4 @@ Fragments are used in later minor stages of the pipeline.
 \subsection{Screen}
 The pipeline ends with fragments rendered to the screen as pixels.
 Rendering happens through writing colour data to a special region in memory
-mapped to the screen \cite{crow2004evolution}.
-
-
+mapped to the screen.
