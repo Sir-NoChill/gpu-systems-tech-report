@@ -1,0 +1,21 @@
+\chapter{GPU Memory Architecture}
+
+The GPU memory system devotes more die area to compute when compared to a CPU, we can look at figure~\ref{fig:gpudiearea}. As we can see more chip area is devoted to compute on the GPU than the CPU. The CPU is designed to hold more branch prediction logic and other predictive structures.
+
+\section{The Register File}
+
+In order to perform latency hiding between multiple warps, each unit of computation (similar to the Vector ALU in a CPU) needs the registers of all the warps that occupy it. This leads to a very large register file. In a RISC-V 32-bit CPU, the register file contains 32 general purpose registers. Each register is 32-bits wide and so the register file is 1024 bits in size. In the MI300X accelerator, the register file is 512 KB in size. This lets us define the occupancy metric for a given compute unit. The occupancy for the MI200 is listed in table~\ref{tab:amdoccupancy}.
+
+In addition, a study from NVIDIA~\cite{nvidia:register-pressure} shows that modern GPU applications are still limited in registers, but adding more registers does not help performance. This is because as we increase the size of the register file, there is an increased latency to access any individual register.
+
+\section{L1 Cache}
+
+The L1 cache in a GPU contains both the local and shared memory in a given streaming multiprocessor (SM). The L1 in a GPU is banked as well as virtually tagged and virtually addressed, in order to avoid invalidating the entire L1 cache on a context switch~\cite{GPGPUbook} (whenever the GPU switches warps to perform latency hiding). When accessing the L1 Cache, a warp will tend to issue many requests at once, but in order to not disproportionately affect the bandwidth utilization of any individual unit of computation, the load store units in each unit will perform address coalescing. This coalescing will combine accesses to the same address range in memory into a single request.
+
+\chapter{Issuing a Memory Request}
+
+Please refer to chapter 4 of~\cite{GPGPUbook} for details, as my presentation copies directly from that book.
+
+\chapter{Memory Coherence in GPU systems}
+
+Please refer to reference~\cite{temporalcoherence} for details on the temporal coherence systems currently at the forefront of GPGPU systems research.
