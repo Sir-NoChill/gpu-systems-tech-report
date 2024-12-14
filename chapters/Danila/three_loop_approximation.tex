@@ -1,4 +1,4 @@
-\section{Three-Loop Approximation}
+\section{Three-Loop Breakdown}
 
 One convenient way of understanding how the GPGPU works is through
 looking at its three main scheduling loops that run within every SM.
@@ -131,12 +131,13 @@ executing in lock-step. How do we handle this?
 The answer is predication: we use a mask (the SIMT Mask) to control which threads in a warp
 should be active (set to 1) and inactive (set to 0) at a given point in the program's execution.
 
-The SIMT Mask is managed by the SIMT Stack.
+In older architectures, this masking was managed by the SIMT Stack, of which
+a detailed explanation and example of can be found on
+on pages 23 to 26 of \cite{aamodt2018general}. Recent GPUs use a synchronization barrier based
+way of handling warp divergence and this can be found on pages 27 to 31 of \cite{aamodt2018general}.
 
 \subsection{Full Architecture}
 
-
-\subsection{Three-Loop Approximation}
 
 \begin{figure}[h]
     \centering

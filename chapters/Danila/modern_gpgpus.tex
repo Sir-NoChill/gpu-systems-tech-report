@@ -4,12 +4,21 @@ This section will cover recent developments in GPGPUs.
 
 \subsection{Reality of Warps}
 
-Recall the Fermi SM diagram in Figure ??. We have two sets of 16 SPs corresponding
+Recall the Fermi SM diagram in Figure \ref{fig:fermiSM}.
+We have two sets of 16 SPs corresponding
 two two warp schedulers, giving us 16 SPs per warp.
 
 Imagining warps as 32 cores executing in lock-step is useful in explaining things,
 but it isn't realistic. In reality, warp execution takes two cycles as shown
-in Figure ??.
+in Figure \ref{fig:exec}. The part on the bottom shows the execution steps
+of instructions 0, 1, and 2 shown on the top part \cite{yt}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/execex.png}
+    \caption{Example of execution of 32 thread warps on 16 SPs.}
+    \label{fig:exec}
+\end{figure}
 
 \subsection{Recent Developments}
 
