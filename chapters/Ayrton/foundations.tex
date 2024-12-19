@@ -17,7 +17,7 @@ When studying memory systems, there are two fundamental structures we need to un
   \end{tikzpicture}
   \caption{A Capacitor.}
 \end{figure}
-Beginning with the capacitor, a capacitor accumulates and stores charge as the buildup of a potential difference between two surfaces insulated from each other CITE. They serve as the physical storage for a single bit in conjunction with a transistor and a ground. Charging a capacitor is a relatively slow operation (relative to the modification of an SRAM cell, as we will discuss in a moment), but the die area of a capacitor and single transistor is significantly less than the die area required for a single cell of SRAM, thus allowing us to produce large capacity DRAM cheaply CITE.
+Beginning with the capacitor, a capacitor accumulates and stores charge as the buildup of a potential difference between two surfaces insulated from each other~\cite{wiki:capacitor}. They serve as the physical storage for a single bit in conjunction with a transistor and a ground. Charging a capacitor is a relatively slow operation (relative to the modification of an SRAM cell, as we will discuss in a moment), but the die area of a capacitor and single transistor is significantly less than the die area required for a single cell of SRAM (6 transistors), thus allowing us to produce large capacity DRAM cheaply.
 
 \begin{figure}
   \centering
@@ -40,7 +40,7 @@ Beginning with the capacitor, a capacitor accumulates and stores charge as the b
   \caption{A Transistor.}
 \end{figure}
 
-The transistor is our next target of study. Simplistically, the transistor is a switch. It consists of three connections: the source, the gate and the drain. The gate serves as the switching mechanism: when we apply current to the gate, current can flow freely between the source and the drain. When no current is applied to the gate, no electricity can flow from the source and drain. The transistors used in hobby projects are often designed to be one-way transistors, however the transistors used in common DRAM systems are designed to allow current to flow both in and out with the same resistance CITE. Current transistor technology relies on the MOSFET paradigm, though Intel's upcoming \SI{16}{\angstrom} process is rumored to use RibbonFET/FINFET technologies CITE.
+The transistor is our next target of study. Simplistically, the transistor is a switch. It consists of three connections: the source, the gate and the drain. The gate serves as the switching mechanism: when we apply current to the gate, current can flow freely between the source and the drain. When no current is applied to the gate, no electricity can flow from the source and drain. The transistors used in hobby projects are often designed to be one-way transistors, however the transistors used in common DRAM systems are designed to allow current to flow both in and out with the same resistance~\cite{wiki:transistor}. Current transistor technology relies on the MOSFET paradigm, though Intel's upcoming \SI{16}{\angstrom} process is rumored to use RibbonFET/FINFET technologies~\cite{intel:manufacturing}.
 
 The transistor and capacitor form the basis for our current memory technologies.
 
@@ -102,8 +102,10 @@ Static Random Access Memory (SRAM) is a type of volatile memory that stores data
 
 An SRAM cell is composed of six transistors arranged in a specific configuration. The most common SRAM cell uses a \textbf{six-transistor (6T)} design. This arrangement ensures that the data is stable and does not require refreshing. A 6T SRAM cell consists of the following components:
 
-- \textbf{Two cross-coupled inverters}: These form the bistable latch that holds the data, constructed of four transistors.
-- \textbf{Two access transistors}: These transistors control the connection to the bitlines during read and write operations.
+\begin{itemize}
+  \item \textbf{Two cross-coupled inverters}: These form the bistable latch that holds the data, constructed of four transistors.
+  \item \textbf{Two access transistors}: These transistors control the connection to the bitlines during read and write operations.
+\end{itemize}
 
 The basic structure of a 6T SRAM cell is shown in Figure~\ref{fig:sram}.
 
