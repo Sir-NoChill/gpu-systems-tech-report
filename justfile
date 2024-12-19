@@ -1,7 +1,7 @@
 nix:
     nix-shell --command "just build"
 
-build: consolidate clean
+build: clean consolidate
     pdflatex main.tex
     biber main
     pdflatex main.tex
@@ -9,7 +9,7 @@ build: consolidate clean
     pdflatex main.tex
 
 consolidate:
-    rm refs.bib
+    -rm refs.bib
     cat citations/* > refs.bib
 
 clean:
