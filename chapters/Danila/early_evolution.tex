@@ -1,11 +1,11 @@
-\section{Early Evolution}
+\chapter{Early Evolution}
 
 Motivated by the popularity of the graphics pipepline, graphics accelerators
 in the 1980s and 1990s largely implemented a fixed pipeline in hardware (\cite{mcclanahan2010history}). This section
 traces the evolution of this fixed design into one that supports general computation.
 This section focuses primarily on Nvidia and their role during this time.
 
-\subsection{Graphics Processing Unit}
+\section{Graphics Processing Unit}
 
 With the design of graphics accelerators heavily coupled to the pipeline,
 one critical difference between accelerators was how much of the
@@ -24,7 +24,7 @@ stage \cite{nvidia256}. This meant more high fidelity simulation.
 
 Nvidia marketed this as a graphics processing unit, popularizing the term.
 
-\subsection{Programmability with Shaders}
+\section{Programmability with Shaders}
 
 Processors started to support programmability through what were called shaders.
 In hardware, shader units supported code that could be written by the programmer
@@ -53,7 +53,7 @@ An example architecture that implemented shaders is in Figure~\ref{fig:geforce6}
 Note the Vertex Processing (vertex shaders) and Texture and Fragment Processing
 (fragment shaders) using different processing units.
 
-\subsection{Unified Shader Architecture}
+\section{Unified Shader Architecture}
 
 The unified architecture replaced bespoke hardware for different shaders with
 a single processor capable of doing all relevant shader tasks.
@@ -73,7 +73,7 @@ to feed back into them.
     \label{fig:geforce8}
 \end{figure}
 
-\subsection{The General Purpose GPU}
+\section{The General Purpose GPU}
 
 
 \begin{figure}[h]

@@ -1,10 +1,10 @@
-\section{GPU Terminology}
+\chapter{GPU Terminology}
 
 To understand the architecture of a GPGPU, we need to define some terms first.
 This section will define various GPU related terms using CUDA examples and their
 Nvidia names. 
 
-\subsection{Programming Concepts}
+\section{Programming Concepts}
 
 \begin{lstlisting}[caption=A simple CUDA example., label={listing:vecadd}]
 __global__ void VecAdd(float* A, float* B, float* C)
@@ -39,7 +39,7 @@ are assigned $threadIdx$s. We can spawn multiple blocks --- which we might
 do if we want to, say, do vector addition on many pairs of vectors.
 Blocks are organized in grids \cite{nvidiaCUDAProgramming}.
 
-\subsection{Hardware Concepts}
+\section{Hardware Concepts}
 
 Computation on GPUs is organized with many streaming multiprocessors (SMs).
 Blocks are assigned to SMs. SMs run one block at a time but can have

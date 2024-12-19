@@ -1,4 +1,4 @@
-\section{Graphics Pipeline}
+\chapter{Graphics Pipeline}
 
 The graphics pipeline gained popularity thanks to the OpenGL API for graphics
 that released in 1989. It's popularity inspired hardware to dedicate individual units
@@ -20,7 +20,7 @@ This section will explain these stages and use them to narrate the evolution of 
 More details can be found in the references, as well as in the Wikipedia page for
 the Graphics Pipeline which covers the same sections as this report \cite{wiki:Graphics_pipeline}.
 
-\subsection{Application}
+\section{Application}
 
 We can understand the \textit{Application} stage by starting from its output.
 Its output includes a set of vertices that encode information pertaining to objects to be rendered onto the screen and their transformations.
@@ -29,7 +29,7 @@ These tasks vary based on the application, but examples include handling physics
 
 The information encoded in vertices varies based on implementation. OpenGL's vertices include position, normal, and color (\cite{wiki:vertex}).
 
-\subsection{Geometry}
+\section{Geometry}
 
 The next stage of the pipeline is the \textit{Geometry} stage. 
 This consists of a number of substages.
@@ -91,7 +91,7 @@ An example of clipping and culling can be found in Figure \ref{fig:clip} taken f
     \label{fig:clip}
 \end{figure}
 
-\subsection{Rasterization}
+\section{Rasterization}
 
 After we pass the \textit{Geometry} stage, we have a set of triangles.
 This stage converts those triangles into fragments.
@@ -107,7 +107,7 @@ they are the same.
 
 Fragments are used in later minor stages of the pipeline.
 
-\subsection{Screen}
+\section{Screen}
 The pipeline ends with fragments rendered to the screen as pixels.
 Rendering happens through writing colour data to a special region in memory
 mapped to the screen.

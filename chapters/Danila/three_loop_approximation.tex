@@ -1,4 +1,4 @@
-\section{Three-Loop Breakdown}
+\chapter{Three-Loop Breakdown}
 
 One convenient way of understanding how the GPGPU works is through
 looking at its three main scheduling loops that run within every SM.
@@ -9,7 +9,7 @@ This section will use the three approximations introduced in the textbook but
 leave the treatment of warp divergence for last. The reader is encouraged to
 refer to the textbook for more details.
 
-\subsection{One-Loop Approximation}
+\section{One-Loop Approximation}
 
 \begin{figure}[h]
     \centering
@@ -34,7 +34,7 @@ instructions for different warps at different cycles. Specifically, if we have
 a warp that is performing a memory access that missed in cache, we can swap
 to another warp whose next instruction uses an ALU, hiding the latency.
 
-\subsection{Two-Loop Approximation}
+\section{Two-Loop Approximation}
 
 \begin{figure}[h]
     \centering
@@ -79,7 +79,7 @@ Instructions with all bits in their bit vectors set to 1 can be scheduled in-ord
 These then add their destination register to the scoreboard and begin execution.
 
 
-\subsection{Three-Loop Approximation}
+\section{Three-Loop Approximation}
 
 The third loop is the scheduler that optimizes accesses to banked register files.
 
@@ -116,7 +116,7 @@ Figure \ref{fig:opcoll} shows how the banked registers could be structured with 
 Refer to \cite{aamodt2018general} pages 35 to 40 for detailed examples that illustrate the benefits of using
 the Operand Collector and bank swizzling.
 
-\subsection{Warp Divergence}
+\section{Warp Divergence}
 
 This approximation has omitted handling warp divergence for the sake of simplicity.
 We can have control flow in CUDA code. An example can be seen in Figure ??.
@@ -136,7 +136,7 @@ a detailed explanation and example of can be found on
 on pages 23 to 26 of \cite{aamodt2018general}. Recent GPUs use a synchronization barrier based
 way of handling warp divergence and this can be found on pages 27 to 31 of \cite{aamodt2018general}.
 
-\subsection{Full Architecture}
+\section{Full Architecture}
 
 
 \begin{figure}[h]
