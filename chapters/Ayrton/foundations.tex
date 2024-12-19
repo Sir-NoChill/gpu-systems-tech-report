@@ -140,7 +140,7 @@ This leads to a few key metrics required to ensure that performance is as good a
 
 \section{Frequency}
 
-A DRAM array has a seperate frequency from the CPU, which is synchronized with its own clock. The skew between the CPU clock and the DRAM clock is mediated by the DRAM interface. More information on the actual structure of the DRAM interface is available in~\cite{TODO}. The presence of the DRAM clock is what makes DRAM synchronous, hence SDRAM.
+A DRAM array has a seperate frequency from the CPU, which is synchronized with its own clock. The skew between the CPU clock and the DRAM clock is mediated by the DRAM interface. More information on the actual structure of the DRAM interface is available in~\cite{isca02:dram, nagano:dram}. The presence of the DRAM clock is what makes DRAM synchronous, hence SDRAM.
 
 \section{CAS Latency}
 
@@ -150,7 +150,7 @@ CAS latency is a result of the time it takes for the electricity to travel throu
 
 \section{Transfers per Second}
 
-Transfers per second is directly related to the throughput of the DRAM system. The smallest data transfer you can perform across a graphics DRAM system is 32 bytes~\cite{TODO}. We can describe the total throughput of the DRAM by:
+Transfers per second is directly related to the throughput of the DRAM system. The smallest data transfer you can perform across a graphics DRAM system is 32 bytes~\cite{micron:gddr}. We can describe the total throughput of the DRAM by:
 \begin{equation*}
   T_{DRAM}=k W_{interface} f_{DRAM}
 \end{equation*}
